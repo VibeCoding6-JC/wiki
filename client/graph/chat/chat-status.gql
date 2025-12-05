@@ -1,0 +1,9 @@
+query ChatStatus {
+  chat {
+    status {
+      isEnabled
+      provider
+      welcomeMessage
+    }
+  }
+}

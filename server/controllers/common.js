@@ -396,6 +396,24 @@ router.get(['/t', '/t/*'], (req, res, next) => {
 })
 
 /**
+ * Chat - AI Knowledge Base Assistant
+ */
+router.get('/chat', (req, res, next) => {
+  // Check if chat is enabled
+  if (!WIKI.config.chat?.enabled) {
+    return res.redirect('/')
+  }
+
+  // Check if user is authenticated (if requireLogin is true)
+  if (WIKI.config.chat?.settings?.requireLogin && req.user.id === 2) {
+    return res.redirect('/login')
+  }
+
+  _.set(res.locals, 'pageMeta.title', 'Chat')
+  res.render('chat')
+})
+
+/**
  * User Avatar
  */
 router.get('/_userav/:uid', async (req, res, next) => {

@@ -16,16 +16,16 @@ class GeminiService {
    */
   init() {
     const config = WIKI.config.chat?.gemini || {}
-    
+
     if (!config.apiKey) {
       throw new Error('Gemini API key is not configured')
     }
 
     this.client = new GoogleGenerativeAI(config.apiKey)
-    this.model = this.client.getGenerativeModel({ 
+    this.model = this.client.getGenerativeModel({
       model: config.model || 'gemini-2.0-flash-exp'
     })
-    
+
     this.maxTokens = config.maxTokens || 2048
     this.temperature = config.temperature || 0.7
   }
@@ -45,13 +45,13 @@ class GeminiService {
 
     // Build context from wiki pages
     const contextText = this.buildContextText(context)
-    
+
     // Build the system prompt
     const systemPrompt = this.buildSystemPrompt(contextText)
-    
+
     // Build chat history for the model
     const formattedHistory = this.formatChatHistory(chatHistory)
-    
+
     try {
       // Start a chat session
       const chat = this.model.startChat({

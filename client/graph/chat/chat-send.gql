@@ -1,0 +1,24 @@
+mutation ChatSendMessage($content: String!, $history: [ChatHistoryInput]) {
+  chat {
+    sendMessage(content: $content, history: $history) {
+      responseResult {
+        succeeded
+        errorCode
+        slug
+        message
+      }
+      message {
+        id
+        role
+        content
+        references {
+          pageId
+          path
+          title
+          locale
+        }
+        createdAt
+      }
+    }
+  }
+}

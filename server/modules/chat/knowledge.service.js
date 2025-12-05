@@ -17,17 +17,17 @@ class KnowledgeService {
    */
   async searchRelevantContent(query, options = {}) {
     const { limit = 5, locale = null } = options
-    
+
     try {
       // Extract keywords from query for better search
       const keywords = this.extractKeywords(query)
-      
+
       // Search pages using the database
       const results = await this.searchPages(keywords, { limit, locale })
-      
+
       // Fetch full content for relevant pages
       const pagesWithContent = await this.fetchPageContent(results)
-      
+
       return pagesWithContent
     } catch (error) {
       WIKI.logger.error(`Knowledge Search Error: ${error.message}`)
@@ -43,12 +43,12 @@ class KnowledgeService {
   extractKeywords(query) {
     // Remove common stop words and extract meaningful keywords
     const stopWords = ['a', 'an', 'the', 'is', 'are', 'was', 'were', 'what', 'how', 'why', 'when', 'where', 'who', 'which', 'do', 'does', 'did', 'can', 'could', 'would', 'should', 'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by', 'from', 'as', 'and', 'or', 'but', 'not', 'be', 'have', 'has', 'had', 'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them', 'my', 'your', 'his', 'its', 'our', 'their', 'saya', 'apa', 'bagaimana', 'mengapa', 'kapan', 'dimana', 'siapa', 'yang', 'dan', 'atau', 'untuk', 'dengan', 'pada', 'dari', 'ke', 'di', 'ini', 'itu']
-    
+
     const words = query.toLowerCase()
       .replace(/[^\w\s]/g, ' ')
       .split(/\s+/)
       .filter(word => word.length > 2 && !stopWords.includes(word))
-    
+
     return [...new Set(words)] // Remove duplicates
   }
 
@@ -60,28 +60,28 @@ class KnowledgeService {
    */
   async searchPages(keywords, options = {}) {
     const { limit = 5, locale = null } = options
-    
+
     if (keywords.length === 0) {
       return []
     }
 
     const searchQuery = keywords.join(' ')
-    
+
     try {
       let query = WIKI.models.pages.query()
         .select('pages.id', 'pages.path', 'pages.title', 'pages.description', 'pages.localeCode as locale', 'pages.content')
         .where('isPublished', true)
-      
+
       // Add locale filter if specified
       if (locale) {
         query = query.andWhere('localeCode', locale)
       }
-      
+
       // Search in title, description, path, and content
       query = query.andWhere(builder => {
         keywords.forEach((keyword, index) => {
           const method = index === 0 ? 'where' : 'orWhere'
-          
+
           if (WIKI.config.db.type === 'postgres') {
             builder[method]('title', 'ILIKE', `%${keyword}%`)
             builder.orWhere('description', 'ILIKE', `%${keyword}%`)
@@ -95,12 +95,12 @@ class KnowledgeService {
           }
         })
       })
-      
+
       const results = await query.limit(limit * 2) // Get more results for ranking
-      
+
       // Rank results by relevance
       const rankedResults = this.rankResults(results, keywords)
-      
+
       return rankedResults.slice(0, limit)
     } catch (error) {
       WIKI.logger.error(`Page Search Error: ${error.message}`)
@@ -121,7 +121,7 @@ class KnowledgeService {
       const lowerDescription = (page.description || '').toLowerCase()
       const lowerPath = (page.path || '').toLowerCase()
       const lowerContent = (page.content || '').toLowerCase()
-      
+
       keywords.forEach(keyword => {
         // Title matches are most important
         if (lowerTitle.includes(keyword)) score += 10
@@ -132,7 +132,7 @@ class KnowledgeService {
         // Content matches
         if (lowerContent.includes(keyword)) score += 1
       })
-      
+
       return { ...page, relevanceScore: score }
     })
     .filter(page => page.relevanceScore > 0)
@@ -148,18 +148,18 @@ class KnowledgeService {
     return pages.map(page => {
       // Truncate content to avoid token limits
       let content = page.content || page.description || ''
-      
+
       // Remove HTML tags if present
       content = content.replace(/<[^>]*>/g, ' ')
-      
+
       // Remove excessive whitespace
       content = content.replace(/\s+/g, ' ').trim()
-      
+
       // Truncate to reasonable length (about 1000 chars per page)
       if (content.length > 1500) {
         content = content.substring(0, 1500) + '...'
       }
-      
+
       return {
         id: page.id,
         path: page.path,

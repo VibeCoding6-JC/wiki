@@ -102,12 +102,20 @@ Backend (Node.js):
 ### Phase 2: Backend Development
 | ID | Task | Status | Priority | Est. Time |
 |----|------|--------|----------|-----------|
-| 2.1 | Buat GraphQL schema untuk Chat | ⬜ Not Started | High | 1 jam |
-| 2.2 | Buat Chat Service untuk handle messages | ⬜ Not Started | High | 3 jam |
-| 2.3 | Buat Knowledge Base Search Service | ⬜ Not Started | High | 3 jam |
-| 2.4 | Integrasi AI Service (Gemini Flash 2.0) | ⬜ Not Started | High | 4 jam |
-| 2.5 | Implement session-based chat storage | ⬜ Not Started | Medium | 1 jam |
-| 2.6 | Testing backend API | ⬜ Not Started | High | 2 jam |
+| 2.1 | Buat GraphQL schema untuk Chat | ✅ Done | High | 1 jam |
+| 2.2 | Buat Chat Service untuk handle messages | ✅ Done | High | 3 jam |
+| 2.3 | Buat Knowledge Base Search Service | ✅ Done | High | 3 jam |
+| 2.4 | Integrasi AI Service (Gemini Flash 2.0) | ✅ Done | High | 4 jam |
+| 2.5 | Implement session-based chat storage | ✅ Done | Medium | 1 jam |
+| 2.6 | Testing backend API | ⏳ Pending | High | 2 jam |
+
+#### 📦 Backend Files Created:
+- `server/graph/schemas/chat.graphql` - GraphQL schema
+- `server/graph/resolvers/chat.js` - Chat resolver
+- `server/modules/chat/gemini.service.js` - Gemini AI integration
+- `server/modules/chat/knowledge.service.js` - KB search service
+- `server/modules/chat/index.js` - Module entry point
+- Installed: `@google/generative-ai` package
 
 ### Phase 3: Frontend Development
 | ID | Task | Status | Priority | Est. Time |
@@ -331,12 +339,12 @@ Instructions:
 ### Overall Progress
 ```
 Phase 1: Persiapan     [██████████] 100% ✅
-Phase 2: Backend       [░░░░░░░░░░] 0%   ← Next
-Phase 3: Frontend      [░░░░░░░░░░] 0%
+Phase 2: Backend       [████████░░] 85%  ← Current
+Phase 3: Frontend      [░░░░░░░░░░] 0%   ← Next
 Phase 4: Testing       [░░░░░░░░░░] 0%
 Phase 5: Documentation [░░░░░░░░░░] 0%
 ─────────────────────────────────────
-Total Progress         [██░░░░░░░░] 20%
+Total Progress         [████░░░░░░] 37%
 ```
 
 ### Estimated Timeline

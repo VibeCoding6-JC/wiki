@@ -34,7 +34,7 @@ module.exports = {
     async sendMessage(obj, args, context, info) {
       try {
         const chatConfig = WIKI.config.chat || {}
-        
+
         // Check if chat is enabled
         if (!chatConfig.enabled) {
           return {
