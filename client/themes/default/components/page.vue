@@ -354,6 +354,24 @@
         :aria-label='$t(`common:actions.returnToTop`)'
         )
         v-icon mdi-arrow-up
+
+    //- Chat Button
+    v-tooltip(left)
+      template(v-slot:activator='{ on }')
+        v-btn.chat-fab-btn(
+          fab
+          fixed
+          bottom
+          right
+          color='secondary'
+          dark
+          v-on='on'
+          href='/chat'
+          :style='chatBtnPosition'
+          aria-label='Chat with AI'
+          )
+          v-icon mdi-robot
+      span Chat with AI
 </template>
 
 <script>
@@ -552,6 +570,9 @@ export default {
       } else {
         return this.$vuetify.rtl ? `right: 65px;` : `left: 65px;`
       }
+    },
+    chatBtnPosition () {
+      return `bottom: 80px;`
     },
     sidebarDecoded () {
       return JSON.parse(Buffer.from(this.sidebar, 'base64').toString())

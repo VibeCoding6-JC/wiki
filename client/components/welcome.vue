@@ -12,24 +12,25 @@
           v-btn.mt-5.mx-3.animated.fadeInUp.wait-p3s(color='primary', href='/a', x-large)
             v-icon(left) mdi-view-dashboard
             span {{ $t('welcome.goadmin') }}
+          v-btn.mt-5.mx-3.animated.fadeInUp.wait-p4s(color='secondary', href='/chat', x-large)
+            v-icon(left) mdi-chat
+            span Chat with AI
 
 </template>
 
 <script>
-
 export default {
   props: {
     locale: {
       type: String,
       default: 'en'
     }
-  },
-  data() {
-    return { }
   }
 }
 </script>
 
 <style lang='scss'>
-
+.wait-p4s {
+  animation-delay: 0.4s;
+}
 </style>
