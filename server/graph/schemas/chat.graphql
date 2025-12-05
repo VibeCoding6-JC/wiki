@@ -1,0 +1,77 @@
+# ===============================================
+# CHAT - AI Knowledge Base Assistant
+# ===============================================
+
+extend type Query {
+  chat: ChatQuery
+}
+
+extend type Mutation {
+  chat: ChatMutation
+}
+
+# -----------------------------------------------
+# QUERIES
+# -----------------------------------------------
+
+type ChatQuery {
+  """
+  Get chat configuration status
+  """
+  status: ChatStatus! @auth(requires: ["read:pages"])
+}
+
+# -----------------------------------------------
+# MUTATIONS
+# -----------------------------------------------
+
+type ChatMutation {
+  """
+  Send a message to the AI assistant and get a response
+  """
+  sendMessage(
+    content: String!
+    history: [ChatHistoryInput]
+  ): ChatResponse! @auth(requires: ["read:pages"])
+}
+
+# -----------------------------------------------
+# TYPES
+# -----------------------------------------------
+
+type ChatStatus {
+  isEnabled: Boolean!
+  provider: String
+  welcomeMessage: String
+}
+
+type ChatResponse {
+  responseResult: ResponseStatus!
+  message: ChatMessage
+}
+
+type ChatMessage {
+  id: ID!
+  role: ChatRole!
+  content: String!
+  references: [ChatReference]
+  createdAt: Date!
+}
+
+type ChatReference {
+  pageId: Int!
+  path: String!
+  title: String!
+  locale: String!
+}
+
+enum ChatRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+input ChatHistoryInput {
+  role: ChatRole!
+  content: String!
+}
