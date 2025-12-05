@@ -18,7 +18,7 @@ type ChatQuery {
   """
   Get chat configuration status
   """
-  status: ChatStatus! @auth(requires: ["read:pages"])
+  status: ChatStatus!
 }
 
 # -----------------------------------------------
@@ -32,7 +32,7 @@ type ChatMutation {
   sendMessage(
     content: String!
     history: [ChatHistoryInput]
-  ): ChatResponse! @auth(requires: ["read:pages"])
+  ): ChatResponse!
 }
 
 # -----------------------------------------------

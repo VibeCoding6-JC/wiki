@@ -64,11 +64,11 @@ module.exports = {
         const { content, history = [] } = args
 
         // Search knowledge base for relevant content
-        const knowledgeService = require('../modules/chat/knowledge.service')
+        const knowledgeService = require('../../modules/chat/knowledge.service')
         const relevantPages = await knowledgeService.searchRelevantContent(content)
 
         // Generate AI response
-        const geminiService = require('../modules/chat/gemini.service')
+        const geminiService = require('../../modules/chat/gemini.service')
         const aiResponse = await geminiService.generateResponse({
           userMessage: content,
           chatHistory: history,
